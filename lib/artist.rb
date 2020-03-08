@@ -1,12 +1,12 @@
 class Artist 
   attr_accessor :name 
-  attr_reader :song 
+  attr_reader :songs  
   
   @@all = []
   
   def initialize(name)
     @name = name
-    @song = []
+    @songs = []
   end 
   
   def self.all
@@ -14,9 +14,12 @@ class Artist
   end
   
   def add_song 
+    @songs.push(song)
   end 
   
   def save
+    @@all.push(self) 
+  end 
     
   
 end 
