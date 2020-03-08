@@ -1,4 +1,4 @@
-def MP3Importer
+class MP3Importer
   
   def initialize(path)
     @path = path
@@ -10,8 +10,9 @@ def MP3Importer
     file.each do |file| 
       if file.include?("mp3")
         @files << file 
-      end 
-    end 
+      end
+    end
+  end
+end
     @files 
     
-  end 
