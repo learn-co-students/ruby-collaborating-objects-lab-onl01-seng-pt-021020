@@ -6,43 +6,35 @@ class Artist
   
   def initialize(name)
     @name = name
-    @songs = [] 
-  end
-  
-  def self.all
-    @@all
+    @songs = []
+    save
   end
   
   def add_song(song)
-    @songs << song 
+    @songs.push(song) 
   end 
   
-  def self.find_or_create_by_name(name)
-    if self.find(name)
-      self.find(name)
-    else
-      self.create(name)
-    end
-  end
-  
-  def self.find(name)
-    @@all.find do |artist|
-      artist.name == name
-    end
-  end
-  
-  def self.create(name)
-    artist = self.new(name)
-    @@all << artist
-    artist
-  end
+  def self.all
+    @@all 
+  end 
   
   def save
-    @@all << self
+  self.class.all << self
+end 
+  
+  def self.find_or_create_by_name(name)
+    existing_artist = self.all.find {|artist| artist.name == name}
+    if existing_artist
+      existing_artist
+    else
+      name = Artist.new(name)
+      name.save
+      name
+    end 
   end
   
-  def print_songs()
-    puts @songs.collect {|x| x.name}
+  def print_songs
+    self.songs.each{|song| puts song.name}
   end
   
 end 
