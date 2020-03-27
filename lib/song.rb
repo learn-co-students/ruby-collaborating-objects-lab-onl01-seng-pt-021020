@@ -12,29 +12,46 @@
 #     associates new song instance with the artist from the filename (FAILED - 17)
 #   #artist_name=
 #     accepts an artist's name, finds or creates an Artist instance and assigns it to the Song's artist attribute (FAILED - 18)
-
-class Song 
-  @@all = []
+require "pry"
+class Song
   attr_accessor :name, :artist
-  def initialize(name) 
+
+  @@all = []
+
+  def initialize(name)
     @name = name
     @@all << self
   end
-  def artist=(artist)
-    @artist = artist
+
+  def self.new_by_filename(filename)
+    song = filename.split(" - ")[1]
+    artist_name = filename.split(" - ")[0]
+    new_song = Song.new(song)
+    new_song.artist_name = artist_name
+    
+    new_song.name = song
+    
+    new_song
+    # binding.pry
   end
-  def self.all  
-    @@all 
+
+  def self.find_by_artist(artist)
+    Song.all.select do | song |
+      song.artist == artist
+    end
   end
-  def new_by_filename(file)
-    song_name = file.split(" - ")[1]
-    artistname = file.split(" - ")[0]
-    song = self.new(song_name)
-    song.artist_name = artistname
-    song
+  
+  def self.all
+    @@all
   end
+
   def artist_name=(name)
-  self.artist= Artist.find_or_create_by_name(name)
-  self.artist.add_song(self)
+    self.artist = Artist.find_or_create_by_name(name)
+    
+  end
+  
+  def save
+    @@all << self
+    self
   end
 end

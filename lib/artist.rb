@@ -42,19 +42,24 @@ end
     @songs 
     
   end
-  def self.find_or_create_by_name(artist_name)
-    # self.all.find {|artist| artist.name == name} || self.new(name).save
-    if @@all.include?Artist.new(artist_name) #compare array of objects 
-    # to an object
-      @@all.find { |artist_name| return artist_name}
-    else 
-      create_new_artist = Artist.new(artist_name)
-        create_new_artist
-    end
+  def self.find_or_create_by_name(name)
+    self.find(name) ? self.find(name) : self.create(name)
   end
-   def print_songs
-    # @songs is the song object we have to iterate over and return the name
-    # by calling the #name method that we initialized the song class with
-      @songs.each {|songs_object| puts songs_object.name}
+
+  def self.find(name)
+    self.all.find {|artist| artist.name == name }
+  end
+
+
+  def self.create(name)
+    self.new(name).tap {|artist| artist.save}
+  end
+
+  def save
+    @@all << self
+  end
+
+  def print_songs
+    songs.each {|song| puts song.name}
   end
 end
